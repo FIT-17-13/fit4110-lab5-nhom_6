@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "FIT4110 Lab05 IoT + Notification Compose Verification",
+    "description": "Postman collection to verify both IoT and Notification services in the shared Lab 05 Compose stack.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01_IoT",
+      "item": [
+        {
+          "name": "GET IoT health returns 200",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('IoT health status 200', function () { pm.response.to.have.status(200); });",
+            "pm.test('IoT dependencies are healthy', function () { const json = pm.response.json(); pm.expect(json.status).to.eql('ok'); pm.expect(json.dependencies.db).to.eql('ok'); pm.expect(json.dependencies.ai_service).to.eql('ok'); });"
+          ] } }]
+        },
+        {
+          "name": "POST valid IoT reading returns 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/readings", "host": ["{{baseUrl}}"], "path": ["readings"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_id\": \"ESP32-LAB-A01\",\n  \"metric\": \"temperature\",\n  \"value\": 31.5,\n  \"unit\": \"celsius\",\n  \"timestamp\": \"2026-05-13T08:30:00+07:00\"\n}"
+            }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('IoT create returns 201', function () { pm.response.to.have.status(201); });",
+            "const json = pm.response.json(); pm.environment.set('createdReadingId', json.reading_id);"
+          ] } }]
+        }
+      ]
+    },
+    {
+      "name": "02_Notification",
+      "item": [
+        {
+          "name": "GET Notification health returns 200",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{notificationBaseUrl}}/health", "host": ["{{notificationBaseUrl}}"], "path": ["health"] }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Notification health status 200', function () { pm.response.to.have.status(200); });",
+            "pm.test('Notification DB dependency healthy', function () { const json = pm.response.json(); pm.expect(json.status).to.eql('ok'); pm.expect(json.dependencies.db).to.eql('ok'); });"
+          ] } }]
+        },
+        {
+          "name": "POST valid notification returns 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{notificationBaseUrl}}/notifications", "host": ["{{notificationBaseUrl}}"], "path": ["notifications"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"alert_id\": \"ALERT-20260513-001\",\n  \"channel\": \"email\",\n  \"recipient\": \"ops@smart-campus.local\",\n  \"subject\": \"High temperature alert\",\n  \"message\": \"Temperature exceeded 80C at Lab A01\"\n}"
+            }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Notification create returns 201', function () { pm.response.to.have.status(201); });",
+            "const json = pm.response.json(); pm.environment.set('createdNotificationId', json.notification_id);"
+          ] } }]
+        },
+        {
+          "name": "GET notification by id returns 200",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{notificationBaseUrl}}/notifications/{{createdNotificationId}}", "host": ["{{notificationBaseUrl}}"], "path": ["notifications", "{{createdNotificationId}}"] }
+          },
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('Notification detail returns 200', function () { pm.response.to.have.status(200); });"
+          ] } }]
+        }
+      ]
+    }
+  ]
+}

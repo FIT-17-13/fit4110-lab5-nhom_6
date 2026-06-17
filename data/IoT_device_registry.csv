@@ -1,0 +1,6 @@
+device_id,device_type,location,room,status
+esp32-lab-a101,environment_sensor,Lab A101,A101,active
+esp32-lab-a102,environment_sensor,Lab A102,A102,active
+esp32-gate-a,environment_sensor,Main Gate A,GATE-A,active
+esp32-library-01,environment_sensor,Library 01,LIB-01,active
+esp32-hall-b201,environment_sensor,Hall B201,B201,active

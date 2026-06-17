@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="FIT4110 Lab05 IoT + Notification Compose Verification" tests="5" time="0.572">
+  <testsuite name="01_IoT / GET IoT health returns 200" id="426a066d-2454-4c56-a501-56e09b9564cf" timestamp="2026-06-14T14:40:38.585Z" tests="2" failures="0" errors="0" time="0.059">
+    <testcase name="IoT health status 200" time="0.059" classname="01IoTGetIoTHealthReturns200"/>
+    <testcase name="IoT dependencies are healthy" time="0.059" classname="01IoTGetIoTHealthReturns200"/>
+  </testsuite>
+  <testsuite name="01_IoT / POST valid IoT reading returns 201" id="8199b64b-07e5-4811-80e5-67e9a3e30a07" timestamp="2026-06-14T14:40:38.585Z" tests="1" failures="0" errors="0" time="0.240">
+    <testcase name="IoT create returns 201" time="0.240" classname="01IoTPostValidIoTReadingReturns201"/>
+  </testsuite>
+  <testsuite name="02_Notification / GET Notification health returns 200" id="684a9888-e7f5-4ef7-aded-013607b5a527" timestamp="2026-06-14T14:40:38.585Z" tests="2" failures="0" errors="0" time="0.142">
+    <testcase name="Notification health status 200" time="0.142" classname="02NotificationGetNotificationHealthReturns200"/>
+    <testcase name="Notification DB dependency healthy" time="0.142" classname="02NotificationGetNotificationHealthReturns200"/>
+  </testsuite>
+  <testsuite name="02_Notification / POST valid notification returns 201" id="6295666f-f15f-4d39-860f-e78ae5f4305e" timestamp="2026-06-14T14:40:38.585Z" tests="1" failures="0" errors="0" time="0.111">
+    <testcase name="Notification create returns 201" time="0.111" classname="02NotificationPostValidNotificationReturns201"/>
+  </testsuite>
+  <testsuite name="02_Notification / GET notification by id returns 200" id="e9b9d37b-ec17-40b0-8101-73ae585d6b15" timestamp="2026-06-14T14:40:38.585Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="Notification detail returns 200" time="0.020" classname="02NotificationGetNotificationByIdReturns200"/>
+  </testsuite>
+</testsuites>

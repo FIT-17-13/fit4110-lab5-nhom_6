@@ -1,16 +1,19 @@
-# Readiness Checklist – Lab 05
+# Readiness Checklist - Lab 05
 
-Đây là danh sách kiểm tra (checklist) để đảm bảo stack Docker Compose của bạn đã sẵn sàng trước khi gửi bài. Hãy tick vào mỗi mục sau khi hoàn thành.
+Day la checklist chung cho stack Lab 05 co ca IoT service va Notification service trong cung project.
 
-- [ ] **Database ready:** container DB đã chạy và phản hồi `pg_isready`. Kiểm tra bằng `docker exec -it fit4110-db-lab05 pg_isready -U $POSTGRES_USER`.
-- [ ] **AI service ready:** container AI service trả về `200` cho endpoint `/health` và `/predict` hoạt động.
-- [ ] **API ready:** container API trả `200` cho `/health` và có thể tạo/lấy readings khi token hợp lệ.
-- [ ] **Environment variables:** `.env` đã được thiết lập đúng (APP_PORT, POSTGRES_USER, AUTH_TOKEN,…). Không sử dụng secret thật; lưu secret vào `.env` cục bộ, commit `.env.example`.
-- [ ] **Network & Ports:** mạng `team-internal` hoạt động; API gọi được AI bằng hostname `ai-service`; ports 8000 (API), 9000 (AI) và 5432 (DB) được map đúng.
-- [ ] **Image tags:** bạn đã build image với tag `v0.1.0-<team>` và push lên registry (ghcr.io hoặc Docker Hub). Xác nhận rằng tag xuất hiện trong registry.
+- [x] **Database ready:** container DB chay on dinh va phan hoi `pg_isready`.
+- [x] **AI service ready:** container AI service tra `200` cho `/health` va `POST /predict` hoat dong cho IoT flow.
+- [x] **IoT API ready:** container IoT API tra `200` cho `/health` va tao/lay readings thanh cong khi token hop le.
+- [x] **Notification API ready:** container Notification API tra `200` cho `/health` va tao/lay notifications thanh cong khi token hop le.
+- [x] **Environment variables:** `.env.example` da khai bao day du port, DB, auth token va AI URL cho ca hai service.
+- [x] **Network & Ports:** mang `team-internal` hoat dong; `api`, `notification`, `db`, `ai-service` giao tiep noi bo on dinh; ports 8000, 8002, 9000, 5432 duoc map ro rang.
+- [x] **Image tags:** image su dung tag `v0.1.0-team-iot` cho IoT/API va AI, `v0.1.0-team-notify` cho Notification.
 
-Ghi chú thêm những vấn đề gặp phải hoặc điều chỉnh tại đây:
+Ghi chu them:
 
 ```
-- Mô tả…
+- IoT service dung PostgreSQL va AI mock trong cung stack Compose.
+- Notification service cung project, cung DB, co healthcheck rieng va Postman test rieng trong collection chung.
+- Newman collection Lab 05 da verify ca IoT va Notification.
 ```

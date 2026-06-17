@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+  title: FIT4110 Lab 05 - Notification API
+  version: v0.1.0-team-notify
+  description: |
+    Notification service contract used in the shared Lab 05 Compose stack.
+servers:
+  - url: http://localhost:8002
+    description: Local notification service
+tags:
+  - name: notifications
+    description: Notification delivery
+  - name: system
+    description: Health and runtime information
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      tags: [system]
+      summary: Check notification service health
+      security: []
+      responses:
+        "200":
+          description: Service is healthy
+  /notifications:
+    post:
+      tags: [notifications]
+      summary: Create notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [alert_id, channel, recipient, message]
+              properties:
+                alert_id: { type: string }
+                channel: { type: string, enum: [email, sms, push, webhook] }
+                recipient: { type: string }
+                subject: { type: string }
+                message: { type: string }
+      responses:
+        "201":
+          description: Notification queued
+        "400":
+          description: Invalid payload
+        "401":
+          description: Unauthorized
+        "409":
+          description: Duplicate alert
+    get:
+      tags: [notifications]
+      summary: List notifications
+      responses:
+        "200":
+          description: Notification list
+  /notifications/{notification_id}:
+    get:
+      tags: [notifications]
+      summary: Get notification detail
+      parameters:
+        - name: notification_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Notification detail
+        "404":
+          description: Not found
+  /notifications/{notification_id}/retry:
+    post:
+      tags: [notifications]
+      summary: Retry notification
+      parameters:
+        - name: notification_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Retry accepted
+        "404":
+          description: Not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: token
